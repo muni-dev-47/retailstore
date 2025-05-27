@@ -13,7 +13,7 @@ let initialState = {
 
 let initialStackData = {
     stacks: [],
-    section: { section: {}, date: {}, sectionID: {} },
+    section: { section: {}},
     stack: {}
 }
 app.get("/get", (req, res) => {

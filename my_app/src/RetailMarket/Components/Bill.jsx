@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addItem, setCustomer, setDate, addBillItem, setUpdateBillItems, deleteItem, setPaymentType, setSalesStatement, setUpdateBill } from '../Redux/appSlice';
@@ -6,16 +6,19 @@ import { removeTab } from '../Redux/tabSlice';
 
 const Bill = () => {
   const [update, setUpdate] = useState({});
+  const itemPrice = useRef();
+  const itemName = useRef();
+  const itemCount = useRef();
   const navigate = useNavigate();
   const { id } = useParams();
   const inde = id.split("&")[0];
   const billItem = useSelector(store => store.bill);
   const dispatch = useDispatch();
   const paymentType = billItem?.billDetails?.paymentType[inde]?.paymentType || "Credit";
-  const customer = billItem?.billDetails.cusName[inde] || "";
-  const date = billItem?.billDetails.date[inde] || "";
-  const items = billItem?.billDetails.billItems[inde] || [];
-  const bill = billItem.billItem[inde] || {};
+  const customer = billItem?.billDetails?.cusName[inde] || "";
+  const date = billItem?.billDetails?.date[inde] || "";
+  const items = billItem?.billDetails?.billItems[inde] || [];
+  const bill = billItem?.billItem?.[inde] || {};
   const handleUpdate = (index) => {
     setUpdate(prev => ({ ...prev, [index]: !prev[index] }));
   }
@@ -44,6 +47,7 @@ const Bill = () => {
       dispatch(addItem({ item: { id: inde, key: name, value: value } }));
   }
   const addItemInBill = () => {
+    itemName.current.focus();
     dispatch(addBillItem({ id: inde }));
   }
   const handleDelete = (index) => {
@@ -53,7 +57,10 @@ const Bill = () => {
     dispatch(setSalesStatement({ id: inde }));
     dispatch(removeTab({ path: window.location.pathname }));
     navigate("/");
-
+  }
+  const handleSwitchTheItemName = () => {
+      itemName.current.focus();
+      addItemInBill();
   }
   return (
     <div>
@@ -64,7 +71,7 @@ const Bill = () => {
             name="customer"
             className="form-control form-control-lg rounded-2 shadow-sm"
             id="validationServer01"
-            value={customer.customer || ""}
+            value={customer?.customer || ""}
             placeholder="Customer Name"
             onChange={(e) => billhandleing(e)}
           />
@@ -74,7 +81,7 @@ const Bill = () => {
             type="date"
             className="form-control form-control-lg rounded-2 shadow-sm"
             name='date'
-            value={date.date ? date.date : new Date().toISOString().split("T")[0]}
+            value={date?.date ? date.date : new Date().toISOString().split("T")[0]}
             onChange={(e) => billhandleing(e)}
           />
         </div>
@@ -90,9 +97,11 @@ const Bill = () => {
           <input
             type="text"
             name="itemName"
+            ref={itemName}
             className="form-control form-control-lg rounded-2 shadow-sm"
-            value={bill.itemName || ""}
+            value={bill?.itemName || ""}
             placeholder="Item Name"
+            onKeyDown={(e) => e.key === "Enter" ? itemPrice.current.focus() : ""}
             onChange={(e) => billhandleing(e)}
           />
         </div>
@@ -100,19 +109,23 @@ const Bill = () => {
           <input
             type="number"
             name="itemPrice"
+            ref={itemPrice}
             className="form-control form-control-lg rounded-2 shadow-sm"
-            value={bill.itemPrice || ""}
+            value={bill?.itemPrice || ""}
             placeholder="Item Price"
+            onKeyDown={(e) => e.key === "Enter" ? itemCount.current.focus() : ""}
             onChange={(e) => billhandleing(e)}
           />
         </div>
         <div className="col-md-3">
           <input
             type="number"
+            ref={itemCount}
             name="itemCount"
             className="form-control form-control-lg rounded-2 shadow-sm"
-            value={bill.itemCount || ""}
+            value={bill?.itemCount || ""}
             placeholder="Quantity"
+            onKeyDown={(e) => e.key === "Enter" ? addItemInBill() : ""}
             onChange={(e) => billhandleing(e)}
           />
         </div>
