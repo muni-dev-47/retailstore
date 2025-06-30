@@ -27,7 +27,7 @@ const Layout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/get");
+        const response = await axios.get("http://localhost:5000/getBills");
         const data = response.data;
         dispatch(setInitialState({ initialState: data }));
       } catch (error) {
@@ -35,7 +35,7 @@ const Layout = () => {
       }
     };
     const getStack = async () => {
-      const data = await axios.get("http://localhost:5000/stackGet");
+      const data = await axios.get("http://localhost:5000/getStack");
       dispatch(setStackForBackend({ stack: { ...data.data } }));
     }
     getStack();

@@ -16,9 +16,21 @@ const stackSlice = createSlice({
 
             state.section.section[section][index] = { ...state.section.section[section][index], [key]: value };
         },
+        updateStackList: (state, action) => {
+            const { index, section } = action.payload;
+            state.stacks[index].section.stacks = state.section.section[section];
+            delete state.section.section[section];
+        },
         deleteStackItem: (state, action) => {
             const { section, index } = action.payload;
             state.section.section[section].splice(index, 1);
+        },
+        updateStackItems: (state, action) => {
+            const { index } = action.payload;
+            console.log(state.stacks[index])
+            const sectionName = state.stacks[index].section.sectionName;
+            const stacks = state.stacks[index].section.stacks;
+            state.section.section[sectionName] = stacks;
         },
         addStackInStore: (state, action) => {
             const { section } = action.payload;
@@ -41,6 +53,6 @@ const stackSlice = createSlice({
     }
 })
 
-export const { addStack, setStackForBackend, deleteStackItem, updateStack, addStackInStore, addAllStackInSection } = stackSlice.actions;
+export const { addStack, updateStackList, updateStackItems, setStackForBackend, deleteStackItem, updateStack, addStackInStore, addAllStackInSection } = stackSlice.actions;
 
 export default stackSlice.reducer;

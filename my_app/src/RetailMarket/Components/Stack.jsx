@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { addAllStackInSection, addStack, updateStack, addStackInStore, deleteStackItem } from '../Redux/stackSlice';
+import { addAllStackInSection, addStack, updateStack, addStackInStore, deleteStackItem, updateStackList } from '../Redux/stackSlice';
 import { removeTab } from '../Redux/tabSlice';
 
 const Stack = () => {
@@ -13,7 +13,8 @@ const Stack = () => {
   const itemCount = useRef();
   const stack = useSelector(store => store.stack);
   const [stackUpdate, setStackUpdate] = useState({});
-  const { sname: section } = useParams()
+  const { sname } = useParams()
+  const section = sname.split("&")[0];
   const stackItems = stack?.stack?.[section];
   const allStackItems = stack?.section?.section?.[section];
   const handleStackUpdateIndex = (index) => {
@@ -32,7 +33,13 @@ const Stack = () => {
   }
   const handleAddAllStacks = () => {
     if (allStackItems?.length) {
-      dispatch(addAllStackInSection({ section, date: location.state.date, sectionName: section }))
+      const path = sname.split("&");
+      if (path.length == 1) {
+        dispatch(addAllStackInSection({ section, date: location.state.date, sectionName: section }))
+      } else {
+        const index = path[1];
+        dispatch(updateStackList({ index, section }));
+      }
     }
     dispatch(removeTab({ path: window.location.pathname, navigate }))
   }

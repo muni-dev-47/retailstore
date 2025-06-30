@@ -13,21 +13,7 @@ const Home = () => {
   const customer = billItem?.billDetails?.cusName[id]?.customer || "ALL";
   const date = billItem?.billDetails?.date[id]?.date || new Date().toISOString().split("T")[0];
   const time = new Date().getTime();
-
-  useEffect(() => {
-    const sendData = async () => {
-      try {
-        const response = await axios.post("http://localhost:5000/post", { ...billItem });
-        console.log("Server response:", response.data);
-      } catch (error) {
-        console.error("Error sending data:", error.message);
-      }
-    };
-
-    sendData();
-
-  }, []);
-
+  
   const addToBillhandleing = () => {
     navigate(`/bill/${time}`);
   }

@@ -14,6 +14,8 @@ export const getPath = (id, sname) => {
         const routePath = parts.length === 2 ? `update/${parts[1]}` : "bill";
         return routePath;
     } else if (path === `/stack/${sname}`) {
-        return "AddStack-" + sname;
+        const parts = sname.split("&");
+        const routePath = parts.length === 2 ? `update/${parts[0]}` : "AddStack-" + sname;;
+        return routePath;
     }
 } 

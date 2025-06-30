@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     tabs: [],
-    currentTab:""
+    currentTab:"/"
 }
 
 const tabSlice = createSlice({

@@ -1,37 +1,31 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
+import { updateStackItems } from '../Redux/stackSlice';
 
 const Stacks = () => {
 
   const stack = useSelector(store => store.stack.stacks);
   const [sectionInput, setSectionInput] = useState({ section: "", date: new Date().toISOString().split("T")[0] })
-  const [searchData,setSearchData] = useState({});
+  const [searchData, setSearchData] = useState({});
   const [search, setSearch] = useState(false);
   const [section, setSection] = useState(false);
   const [select, setselect] = useState("section");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClick = () => setSection(val => !val);
- 
-  useEffect(() => {
-    async function postStackData() {
-      try {
-        const message = await axios.post("http://localhost:5000/stackPost", { stacks: stack });
-        console.log(message.data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    postStackData();
-  }, [])
+  const updateStackItem = (item, index) => {
+    dispatch(updateStackItems({ index }));
+    navigate(`/stack/${item.section.sectionName + "&" + index}`);
+  }
   return (
     <div>
       {search &&
-        <div className='row' style={{ filter: section ? 'blur(5px)' : "" , marginBottom:"50px"}}>
+        <div className='row' style={{ filter: section ? 'blur(5px)' : "", marginBottom: "50px" }}>
           <div className='col'><input type="text" name="" className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Section..." /></div>
-          {select === "section" ? <div className='col'><input type="text" name='searchItem'value={searchData?.searchItem || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Search by name or ID" onChange={(e) => setSearchData({[e.target.name]:e.target.value})}/></div> :
-            <div className='col'><input type="date" name="date" className='form-control form-control-lg rounded-2 shadow-sm' value={searchData?.date ?? new Date().toISOString().split("T")[0]} onChange={(e) => setSearchData({[e.target.name]:e.target.value})}/></div>}
+          {select === "section" ? <div className='col'><input type="text" name='searchItem' value={searchData?.searchItem || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Search by name or ID" onChange={(e) => setSearchData({ [e.target.name]: e.target.value })} /></div> :
+            <div className='col'><input type="date" name="date" className='form-control form-control-lg rounded-2 shadow-sm' value={searchData?.date ?? new Date().toISOString().split("T")[0]} onChange={(e) => setSearchData({ [e.target.name]: e.target.value })} /></div>}
           <div className='col'><select className="form-select form-select-lg rounded-2 shadow-sm" onChange={(e) => setselect(e.target.value)} >
             <option value={"section"}>Section</option>
             <option value={"date"}>Date</option>
@@ -91,9 +85,9 @@ const Stacks = () => {
                   <td>{index + 1}</td>
                   <td>{val?.section?.sectionName?.toUpperCase()}</td>
                   <td>{val?.section?.date}</td>
-                  <td>{val?.section?.stacks?.reduce((sum, data) => sum + data.itemCount, 0)}</td>
+                  <td>{val.section.stacks.length}</td>
                   <td>
-                    <button className='btn btn-primary rounded-pill '><i class="bi bi-pencil edit" title="Edit"></i></button>
+                    <button className='btn btn-primary rounded-pill' onClick={() => updateStackItem(val, index)}><i class="bi bi-pencil edit" title="Edit"></i></button>
                   </td>
                 </tr>
               ))
@@ -109,7 +103,7 @@ const Stacks = () => {
               width: '500px',
               background: 'linear-gradient(135deg, rgb(247 247 247) 0%, #fff 100%)',
               animation: 'fadeIn 0.3s ease-out',
-              top:"100px"
+              top: "100px"
             }}
           >
             <div className="text-center mb-4">

@@ -1,11 +1,14 @@
 import React from 'react'
 import "./Tab.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { removeTab, setCurrentTab } from '../Redux/tabSlice';
+import { deleteBillItems } from '../Redux/appSlice';
 const Tab = ({ sidebarOpen }) => {
   const { tabs, currentTab } = useSelector(store => store.tab);
   const dispatch = useDispatch();
+  let { id } = useParams();
+  id = id?.split("&")?.[0];
   const navigate = useNavigate();
   const tabHandling = (path) => {
     if (window.location.pathname === path) return;
@@ -17,6 +20,7 @@ const Tab = ({ sidebarOpen }) => {
     let confirmDelete;
     if (path !== "/") { confirmDelete = window.confirm("Are you sure you want to delete?"); }
     if (confirmDelete) {
+      dispatch(deleteBillItems({ id }));
       dispatch(removeTab({ path, navigate }));
     }
   }

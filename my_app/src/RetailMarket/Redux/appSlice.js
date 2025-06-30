@@ -47,6 +47,13 @@ const billSlice = createSlice({
             const { id, index } = action.payload;
             state.billDetails.billItems[id].splice(index, 1);
         },
+        deleteBillItems: (state, action) => {
+            const { id } = action.payload;
+            delete state.billDetails.billItems[id];
+            delete state.billDetails.cusName[id];
+            delete state.billDetails.date[id];
+            delete state.billDetails.paymentType[id];
+        },
         setPaymentType: (state, action) => {
             const { id, paymentType } = action.payload;
             state.billDetails.paymentType[id] = { paymentType };
@@ -82,6 +89,6 @@ const billSlice = createSlice({
     }
 })
 
-export const { updateSales, setInitialState, addBillItem, setUpdateBill, addItem, setCustomer, setDate, setUpdateBillItems, deleteItem, setPaymentType, setSalesStatement } = billSlice.actions;
+export const { updateSales, deleteBillItems, setInitialState, addBillItem, setUpdateBill, addItem, setCustomer, setDate, setUpdateBillItems, deleteItem, setPaymentType, setSalesStatement } = billSlice.actions;
 
 export default billSlice.reducer;
