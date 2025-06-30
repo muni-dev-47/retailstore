@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import Sales from '../Presentation/Sales';
-import { setCustomer, setDate, setInitialState, setPaymentType, updateSales } from '../Redux/appSlice';
+import { setCustomer, setDate, setPaymentType, updateSales } from '../Redux/appSlice';
 import axios from 'axios';
 const Home = () => {
   const navigate = useNavigate();

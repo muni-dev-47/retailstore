@@ -12,11 +12,35 @@ const stackSlice = createSlice({
             return { ...action.payload.stack };
         },
         updateStack: (state, action) => {
+            const { section, key, value, index } = action.payload;
 
+            state.section.section[section][index] = { ...state.section.section[section][index], [key]: value };
         },
+        deleteStackItem: (state, action) => {
+            const { section, index } = action.payload;
+            state.section.section[section].splice(index, 1);
+        },
+        addStackInStore: (state, action) => {
+            const { section } = action.payload;
+            if (!state.section.section[section]) state.section.section[section] = [];
+            let index = 0;
+            index = state.section.section[section]?.findIndex(val => (val.itemName === state.stack[section].itemName) && (val.itemPrice === state.stack[section].itemPrice))
+            if (index != -1) {
+                state.section.section[section][index].itemCount = new Number(state.section.section[section][index].itemCount) + new Number(state.stack[section].itemCount);
+            } else {
+                state.section.section[section].push({ ...state.stack[section] })
+            }
+            delete state.stack[section]
+        },
+        addAllStackInSection: (state, action) => {
+            const { section, date, sectionName } = action.payload;
+            state.stacks.push({ section: { stacks: state.section.section[section], date, sectionName } })
+            delete state.section.section[section]
+            delete state?.stack?.[section]
+        }
     }
 })
 
-export const { addStack, setStackForBackend, updateStack } = stackSlice.actions;
+export const { addStack, setStackForBackend, deleteStackItem, updateStack, addStackInStore, addAllStackInSection } = stackSlice.actions;
 
 export default stackSlice.reducer;

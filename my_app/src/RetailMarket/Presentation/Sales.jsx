@@ -22,8 +22,7 @@ const Sales = (props) => {
                             <td>
                                 <button className='btn btn-success rounded-pill '><i class="bi bi-eye view" title="View"></i></button>
                                 <button className='btn btn-primary rounded-pill ' onClick={() => updateSales(item)}><i class="bi bi-pencil edit" title="Edit"></i></button>
-                                <button className='btn btn-danger rounded-pill '><i class="bi bi-trash delete" title="Delete"></i></button>
-                                </td>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -14,7 +14,8 @@ const Tab = ({ sidebarOpen }) => {
   }
   const deleteTab = (e, path) => {
     e.stopPropagation();
-    const confirmDelete = window.confirm("Are you sure you want to delete?");
+    let confirmDelete;
+    if (path !== "/") { confirmDelete = window.confirm("Are you sure you want to delete?"); }
     if (confirmDelete) {
       dispatch(removeTab({ path, navigate }));
     }
@@ -23,7 +24,7 @@ const Tab = ({ sidebarOpen }) => {
     <div>
       <div className='button-container' style={{ marginLeft: sidebarOpen ? "0px" : "60px" }}>
         {tabs.map(tabs => (
-          <div style={{position:'relative'}}>
+          <div style={{ position: 'relative' }}>
             <button
               key={tabs.path}
               className={`button rounded-pill px-4`}

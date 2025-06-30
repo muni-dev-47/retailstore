@@ -58,10 +58,6 @@ const Bill = () => {
     dispatch(removeTab({ path: window.location.pathname }));
     navigate("/");
   }
-  const handleSwitchTheItemName = () => {
-      itemName.current.focus();
-      addItemInBill();
-  }
   return (
     <div>
       <div className="row g-2 align-items-center mb-2">

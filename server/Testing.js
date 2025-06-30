@@ -1,6 +1,25 @@
-const billItem = {
-    
-}
-const paymentType = billItem.billDetails?.paymentType[30].paymentType || "Credit";
+const array1 = [
+  { itemName: 'Apple', qty: 13 },
+  { itemName: 'Banana', qty: 2 }
+];
 
-console.log(paymentType);
+const array2 = [
+  { itemName: 'Apple', qty: 4 },
+  { itemName: 'Orange', qty: 5 }
+];
+
+const merged = {...array1[0],...array2[0]};
+console.log(merged)
+
+// console.log([...array1, ...array2]);
+// [...array1, ...array2].forEach(item => {
+//   if (merged[item.itemName]) {
+//     merged[item.itemName].qty += item.qty;
+//   } else {
+//     merged[item.itemName] = { ...item };
+//   }
+// });
+
+// const result = Object.values(merged);
+
+// console.log(result);

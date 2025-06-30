@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../Sidebar/Sidebar'
 import Tab from '../Tabs/Tab'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { addTab } from '../Redux/tabSlice';
 import { getPath } from './getPath';
@@ -12,6 +12,7 @@ import { setStackForBackend } from '../Redux/stackSlice';
 const Layout = () => {
   const [sidebar, setSidbar] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { id, sname } = useParams();
 
   useEffect(() => {
@@ -19,6 +20,10 @@ const Layout = () => {
     dispatch(addTab({ path: { pathName, path: window.location.pathname } }))
   }, [window.location.pathname]);
 
+  useEffect(() => {
+    navigate("/")
+  }, [])
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
