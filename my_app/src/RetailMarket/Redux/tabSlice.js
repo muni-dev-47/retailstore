@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     tabs: [],
-    currentTab:"/"
+    currentTab: "/"
 }
 
 const tabSlice = createSlice({
@@ -24,7 +24,7 @@ const tabSlice = createSlice({
             if (state.currentTab === action.payload.path) {
                 state.currentTab = state.tabs[state.tabs.length - 1]?.path || '/'
                 if (action.payload.navigate) {
-                    action.payload.navigate(state.currentTab);
+                    action.payload.navigate(action.payload.navigationPath ? action.payload.navigationPath : state.currentTab);
                 }
             }
         },

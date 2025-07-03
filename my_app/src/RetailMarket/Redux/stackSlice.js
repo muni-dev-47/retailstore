@@ -1,20 +1,53 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const postStackStatement = createAsyncThunk(
+    "bill/postSalesStatement",
+    async (statement, { rejectWithValue }) => {
+        try {
+            const response = await axios.post("http://localhost:5000/api/postStacks", statement);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Something went wrong");
+        }
+    }
+);
+
+export const putStackStatement = createAsyncThunk(
+    "bill/putSalesStatement",
+    async (statement, { rejectWithValue }) => {
+        try {
+            console.log(statement)
+            const response = await axios.put("http://localhost:5000/api/putStacks", statement);
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Something went wrong");
+        }
+    }
+);
+
+const initialState = {
+    stacks: [],
+    section: { section: {} },
+    stack: {}
+}
 
 const stackSlice = createSlice({
     name: "stack",
-    initialState: {},
+    initialState,
     reducers: {
         addStack: (state, action) => {
             const { section, key, value } = action.payload;
             state.stack[section] = { ...state.stack[section], [key]: value }
         },
         setStackForBackend: (state, action) => {
-            return { ...action.payload.stack };
+            state.stacks = [...action.payload.stacks];
         },
         updateStack: (state, action) => {
             const { section, key, value, index } = action.payload;
-
-            state.section.section[section][index] = { ...state.section.section[section][index], [key]: value };
+            if (Number(value)) {
+                state.section.section[section][index] = { ...state.section.section[section][index], [key]: value };
+            } else {
+                state.section.section[section].splice(index, 1);
+            }
         },
         updateStackList: (state, action) => {
             const { index, section } = action.payload;

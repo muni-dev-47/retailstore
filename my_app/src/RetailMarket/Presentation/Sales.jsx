@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Sales = (props) => {
-    const { sales, updateSales } = props;
+    const { sales, updateSales, billDetails } = props;
     return (
         <div>
             <table class="table table-success table-striped table-hover text-center">
@@ -20,7 +20,7 @@ const Sales = (props) => {
                             <td>{item.cusName.toUpperCase()}</td>
                             <td>{item.bill.reduce((total, item) => total + (item.itemPrice * item.itemCount), 0)}</td>
                             <td>
-                                <button className='btn btn-success rounded-pill '><i class="bi bi-eye view" title="View"></i></button>
+                                <button className='btn btn-success rounded-pill ' onClick={() => billDetails(item , index)}><i class="bi bi-eye view" title="View"></i></button>
                                 <button className='btn btn-primary rounded-pill ' onClick={() => updateSales(item)}><i class="bi bi-pencil edit" title="Edit"></i></button>
                             </td>
                         </tr>

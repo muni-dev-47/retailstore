@@ -13,7 +13,7 @@ const Home = () => {
   const customer = billItem?.billDetails?.cusName[id]?.customer || "ALL";
   const date = billItem?.billDetails?.date[id]?.date || new Date().toISOString().split("T")[0];
   const time = new Date().getTime();
-  
+
   const addToBillhandleing = () => {
     navigate(`/bill/${time}`);
   }
@@ -30,7 +30,11 @@ const Home = () => {
   }
   const updateSale = (billItem) => {
     dispatch(updateSales({ id: billItem.id, bill: billItem.bill, customer: billItem.cusName, paymentType: billItem.paymentType, date: billItem.date }))
-    navigate(`/bill/${billItem.id + "&"+billItem.cusName}`);
+    navigate(`/bill/${billItem.id + "&" + billItem.cusName}`);
+  }
+
+  const handleBillPrinting = (item, index) => {
+    navigate(`/billDetail/${item.cusName + "&" + index}`);
   }
   const sales = useSelector(store => store.bill.salesStatements);
   const salesItems = sales?.filter(val => val.paymentType === paymentType && val.date === date && (customer !== "ALL" ? val.cusName === customer : true));
@@ -50,7 +54,7 @@ const Home = () => {
           </select>
         </div>
       </div>
-      <Sales sales={salesItems} updateSales={updateSale} />
+      <Sales sales={salesItems} updateSales={updateSale} billDetails={handleBillPrinting} />
       <div class="d-flex justify-content-center">
         <button className='btn btn-primary addbillbutton rounded-pill px-4' onClick={addToBillhandleing}>+ Add bill</button>
       </div>

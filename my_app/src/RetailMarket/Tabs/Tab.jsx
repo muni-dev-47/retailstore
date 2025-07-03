@@ -35,7 +35,7 @@ const Tab = ({ sidebarOpen }) => {
               style={{ backgroundColor: tabs.path === currentTab ? "#343a40" : 'gray' }}
               onClick={() => tabHandling(tabs.path)}
               title={tabs?.pathName}
-            ><span className='button-text'>{tabs?.pathName}</span><span className='button-close' onClick={(e) => deleteTab(e, tabs.path)}>{"  x"}</span></button>
+            ><span className='button-text'>{tabs?.pathName.toUpperCase()}</span><span className='button-close' onClick={(e) => deleteTab(e, tabs.path)}>{"  x"}</span></button>
           </div>
         ))}
       </div>

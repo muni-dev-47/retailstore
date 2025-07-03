@@ -1,11 +1,44 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const postSalesStatement = createAsyncThunk(
+    "bill/postSalesStatement",
+    async (statement, { rejectWithValue }) => {
+        try {
+            const response = await axios.post("http://localhost:5000/api/postSales", statement);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Something went wrong");
+        }
+    }
+);
+
+export const putSalesStatement = createAsyncThunk(
+    "bill/putSalesStatement",
+    async (statement, { rejectWithValue }) => {
+        try {
+            const response = await axios.put("http://localhost:5000/api/putSales", statement);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data || "Something went wrong");
+        }
+    }
+);
+
+
+const initialState = {
+    salesStatements: [],
+    billDetails: { billItems: {}, cusName: {}, date: {}, paymentType: {} },
+    billItem: {}
+};
+
 
 const billSlice = createSlice({
     name: 'bill',
-    initialState: {},
+    initialState,
     reducers: {
         setInitialState: (state, action) => {
-            return { ...action.payload.initialState };
+            state.salesStatements = [...action.payload.initialState];
         },
 
         addItem: (state, action) => {
@@ -23,7 +56,7 @@ const billSlice = createSlice({
             //     delete state.billItem[action.payload.id];
             // }
             // else 
-            if (state.billItem[action.payload.id]) {
+            if (state.billItem[action.payload.id] && state.billItem[action.payload.id]) {
                 state.billDetails.billItems[action.payload.id].push(state.billItem[action.payload.id]);
                 delete state.billItem[action.payload.id];
             } else {
@@ -40,8 +73,12 @@ const billSlice = createSlice({
         },
         setUpdateBillItems: (state, action) => {
             const { id, index, key, value } = action.payload;
-            console.log(action.payload);
-            state.billDetails.billItems[id][index] = { ...state.billDetails.billItems[id][index], [key]: value };
+            console.log(Number(value))
+            if (Number(value) !== 0) {
+                state.billDetails.billItems[id][index] = { ...state.billDetails.billItems[id][index], [key]: value };
+            } else {
+                state.billDetails.billItems[id].splice(index, 1);
+            }
         },
         deleteItem: (state, action) => {
             const { id, index } = action.payload;
@@ -76,7 +113,6 @@ const billSlice = createSlice({
         setUpdateBill: (state, action) => {
             const { id } = action.payload;
             const index = state.salesStatements.findIndex(val => val.id === id);
-            console.log(state.billDetails.billItems[id]);
             state.salesStatements[index].bill = state.billDetails.billItems[id];
             state.salesStatements[index].cusName = state.billDetails.cusName[id]?.customer || "retailer";
             state.salesStatements[index].date = state.billDetails.date[id]?.date || new Date().toISOString().split("T")[0];

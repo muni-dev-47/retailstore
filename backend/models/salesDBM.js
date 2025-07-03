@@ -15,8 +15,9 @@ const billSchema = new mongoose.Schema({
 });
 
 const salesArraySchema = new mongoose.Schema({
-    sales: [billSchema] 
+    _id: String,          
+    sales: [billSchema]
 });
 
-const SalesArray = mongoose.model("SalesArray", salesArraySchema);
-module.exports = SalesArray;
+const Sales = mongoose.model("Sales", salesArraySchema);
+module.exports = Sales;

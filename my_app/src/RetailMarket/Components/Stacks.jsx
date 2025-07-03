@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { updateStackItems } from '../Redux/stackSlice';
@@ -7,8 +6,8 @@ import { updateStackItems } from '../Redux/stackSlice';
 const Stacks = () => {
 
   const stack = useSelector(store => store.stack.stacks);
-  const [sectionInput, setSectionInput] = useState({ section: "", date: new Date().toISOString().split("T")[0] })
-  const [searchData, setSearchData] = useState({});
+  const [sectionInput, setSectionInput] = useState({ section: "" })
+  const [searchData, setSearchData] = useState({ sectionName: "ALL", date: new Date().toISOString().split("T")[0] });
   const [search, setSearch] = useState(false);
   const [section, setSection] = useState(false);
   const [select, setselect] = useState("section");
@@ -19,13 +18,24 @@ const Stacks = () => {
     dispatch(updateStackItems({ index }));
     navigate(`/stack/${item.section.sectionName + "&" + index}`);
   }
+  console.log(searchData)
+  const handleFilterStacks = () => {
+    return stack.filter(val =>
+      select === "section"
+        ? searchData.sectionName?.toUpperCase() !== "ALL"
+          ? val.section.sectionName?.toLowerCase() === searchData.sectionName?.toLowerCase()
+          : true
+        : val.section.date?.split("T")[0] === searchData.date
+    );
+  };
+  console.log(handleFilterStacks())
   return (
     <div>
       {search &&
         <div className='row' style={{ filter: section ? 'blur(5px)' : "", marginBottom: "50px" }}>
           <div className='col'><input type="text" name="" className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Section..." /></div>
-          {select === "section" ? <div className='col'><input type="text" name='searchItem' value={searchData?.searchItem || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Search by name or ID" onChange={(e) => setSearchData({ [e.target.name]: e.target.value })} /></div> :
-            <div className='col'><input type="date" name="date" className='form-control form-control-lg rounded-2 shadow-sm' value={searchData?.date ?? new Date().toISOString().split("T")[0]} onChange={(e) => setSearchData({ [e.target.name]: e.target.value })} /></div>}
+          {select === "section" ? <div className='col'><input type="text" name='sectionName' value={searchData?.sectionName || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Search by name or ID" onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))} /></div> :
+            <div className='col'><input type="date" name="date" className='form-control form-control-lg rounded-2 shadow-sm' value={searchData?.date ?? new Date().toISOString().split("T")[0]} onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))} /></div>}
           <div className='col'><select className="form-select form-select-lg rounded-2 shadow-sm" onChange={(e) => setselect(e.target.value)} >
             <option value={"section"}>Section</option>
             <option value={"date"}>Date</option>
@@ -80,11 +90,11 @@ const Stacks = () => {
           </thead>
           <tbody>
             {
-              stack?.map((val, index) => (
+              handleFilterStacks()?.map((val, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{val?.section?.sectionName?.toUpperCase()}</td>
-                  <td>{val?.section?.date}</td>
+                  <td>{val?.section?.date.split("T")[0]}</td>
                   <td>{val.section.stacks.length}</td>
                   <td>
                     <button className='btn btn-primary rounded-pill' onClick={() => updateStackItem(val, index)}><i class="bi bi-pencil edit" title="Edit"></i></button>
@@ -122,7 +132,7 @@ const Stacks = () => {
                 onKeyDown={(e) =>
                   e.key === "Enter" &&
                   (sectionInput.section
-                    ? navigate(`/stack/${sectionInput.section}`, { state: { ...sectionInput } })
+                    ? navigate(`/stack/${sectionInput.section}`, { state: { ...sectionInput, date: new Date().toISOString() } })
                     : alert("Please enter the section"))
                 }
                 placeholder="e.g. SEC-2023-001"
@@ -130,7 +140,7 @@ const Stacks = () => {
               />
             </div>
 
-            <div className="my-4">
+            {/* <div className="my-4">
               <label htmlFor="dateInput" className="form-label text-dark mb-2">Select Date</label>
               <input
                 id="dateInput"
@@ -140,7 +150,7 @@ const Stacks = () => {
                 className="form-control form-control-lg rounded-3 border-0 shadow-sm"
                 onChange={(e) => setSectionInput(val => ({ ...val, [e.target.name]: e.target.value }))}
               />
-            </div>
+            </div> */}
 
             <div className="d-flex justify-content-center mt-5">
               <button

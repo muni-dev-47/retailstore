@@ -1,4 +1,4 @@
-export const getPath = (id, sname) => {
+export const getPath = (id, sname, cname) => {
     const path = window.location.pathname;
 
     if (path === "/") {
@@ -15,7 +15,9 @@ export const getPath = (id, sname) => {
         return routePath;
     } else if (path === `/stack/${sname}`) {
         const parts = sname.split("&");
-        const routePath = parts.length === 2 ? `update/${parts[0]}` : "AddStack-" + sname;;
+        const routePath = parts.length === 2 ? `update/${parts[0]}` : "AddStack-" + sname;
         return routePath;
+    } else if (path === `/billDetail/${cname}`) {
+        return "billDetails-" + cname;
     }
 } 

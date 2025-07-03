@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addItem, setCustomer, setDate, addBillItem, setUpdateBillItems, deleteItem, setPaymentType, setSalesStatement, setUpdateBill, deleteBillItems } from '../Redux/appSlice';
+import { addItem, setCustomer, setDate, addBillItem, setUpdateBillItems, deleteItem, setPaymentType, setSalesStatement, postSalesStatement, setUpdateBill, putSalesStatement } from '../Redux/appSlice';
 import { removeTab } from '../Redux/tabSlice';
 
 const Bill = () => {
@@ -13,6 +13,7 @@ const Bill = () => {
   const { id } = useParams();
   const inde = id.split("&")[0];
   const billItem = useSelector(store => store.bill);
+  const billDetails = useSelector((state) => state.bill.billDetails);
   const dispatch = useDispatch();
   const paymentType = billItem?.billDetails?.paymentType[inde]?.paymentType || "Credit";
   const customer = billItem?.billDetails?.cusName[inde] || "";
@@ -28,9 +29,17 @@ const Bill = () => {
   }
 
   const updateSale = () => {
+    const statement = {
+      id: inde,
+      bill: billDetails.billItems[inde],
+      cusName: billDetails.cusName[inde]?.customer || "retailer",
+      date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
+      paymentType: billDetails.paymentType[inde]?.paymentType || "Credit"
+    };
+    dispatch(putSalesStatement(statement));
     dispatch(setUpdateBill({ id: inde }));
-    dispatch(removeTab({ path: window.location.pathname }));
-    navigate("/");
+    dispatch(removeTab({ path: window.location.pathname, navigate, navigationPath: "/" }));
+
   }
 
   const billhandleing = (e) => {
@@ -54,9 +63,17 @@ const Bill = () => {
     dispatch(deleteItem({ id: inde, index }));
   }
   const addSales = () => {
+    const statement = {
+      id: inde,
+      bill: billDetails.billItems[inde],
+      cusName: billDetails.cusName[inde]?.customer || "retailer",
+      date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
+      paymentType: billDetails.paymentType[inde]?.paymentType || "Credit"
+    };
+
     dispatch(setSalesStatement({ id: inde }));
-    dispatch(removeTab({ path: window.location.pathname }));
-    navigate("/");
+    dispatch(postSalesStatement(statement));
+    dispatch(removeTab({ path: window.location.pathname, navigate, navigationPath: "/" }));
   }
   return (
     <div>
@@ -149,7 +166,7 @@ const Bill = () => {
               {!update[index] ?
                 (
                   <><td>{index + 1}</td>
-                    <td>{item.itemName}</td>
+                    <td>{item.itemName.toUpperCase()}</td>
                     <td>{item.itemPrice}</td>
                     <td>{item.itemCount}</td>
                     <td>{item.itemCount * item.itemPrice}</td>

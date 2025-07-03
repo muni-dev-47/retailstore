@@ -1,24 +1,38 @@
-*{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
+
 *::-webkit-scrollbar {
-    height: 6px;
-  }
-  
+  height: 4px;     
+  width: 4px;       
+}
+
 *::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-  }
-  
-.addbillbutton{
-    position: fixed;
-    bottom: 15px;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+.addbillbutton {
+  position: fixed;
+  bottom: 15px;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .bg-gradient-primary {
@@ -29,8 +43,7 @@
   box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
 }
 
-.addbillbutton1{
-    position: fixed;
-    bottom: 40px;
+.addbillbutton1 {
+  position: fixed;
+  bottom: 40px;
 }
-

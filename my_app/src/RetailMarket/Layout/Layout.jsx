@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../Sidebar/Sidebar'
 import Tab from '../Tabs/Tab'
-import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { addTab } from '../Redux/tabSlice';
 import { getPath } from './getPath';
@@ -13,33 +13,39 @@ const Layout = () => {
   const [sidebar, setSidbar] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { id, sname } = useParams();
-
+  const { id, sname, cname } = useParams();
   useEffect(() => {
-    const pathName = getPath(id, sname);
+    const pathName = getPath(id, sname, cname);
     dispatch(addTab({ path: { pathName, path: window.location.pathname } }))
   }, [window.location.pathname]);
 
   useEffect(() => {
     navigate("/")
   }, [])
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/getBills");
+        const response = await axios.get("http://localhost:5000/api/getSales");
         const data = response.data;
+        console.log(data)
         dispatch(setInitialState({ initialState: data }));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     const getStack = async () => {
-      const data = await axios.get("http://localhost:5000/getStack");
-      dispatch(setStackForBackend({ stack: { ...data.data } }));
+      try {
+        const data = await axios.get("http://localhost:5000/api/getStacks");
+        console.log(data.data)
+        dispatch(setStackForBackend({ stacks: data.data }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+
+      }
+
     }
     getStack();
-
     fetchData();
 
   }, [])
