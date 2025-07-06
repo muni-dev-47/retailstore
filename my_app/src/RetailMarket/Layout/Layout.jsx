@@ -26,7 +26,7 @@ const Layout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/getSales");
+        const response = await axios.get("http://localhost:5000/api/getSales", { params: { email: JSON.parse(localStorage.getItem("user")).email } });
         const data = response.data;
         console.log(data)
         dispatch(setInitialState({ initialState: data }));
@@ -36,7 +36,7 @@ const Layout = () => {
     };
     const getStack = async () => {
       try {
-        const data = await axios.get("http://localhost:5000/api/getStacks");
+        const data = await axios.get("http://localhost:5000/api/getStacks", { params: { email: JSON.parse(localStorage.getItem("user")).email } });
         console.log(data.data)
         dispatch(setStackForBackend({ stacks: data.data }));
       } catch (error) {
@@ -45,6 +45,7 @@ const Layout = () => {
       }
 
     }
+
     getStack();
     fetchData();
 

@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use("/api/", require("./routes/salesRoute"));
 app.use("/api/", require("./routes/stackRoute"));
+app.use("/api/", require("./routes/loginRoute"))
 
 connectDB();
 

@@ -16,6 +16,9 @@ const tabSlice = createSlice({
                 state.tabs.push(path);
             }
             state.currentTab = path.path;
+        },
+        removeAllTabs: (state) => {
+            state.tabs = [];
         }
         ,
         removeTab: (state, action) => {
@@ -34,6 +37,6 @@ const tabSlice = createSlice({
     }
 })
 
-export const { addTab, removeTab, setCurrentTab } = tabSlice.actions;
+export const { addTab, removeTab, removeAllTabs, setCurrentTab } = tabSlice.actions;
 
 export default tabSlice.reducer;

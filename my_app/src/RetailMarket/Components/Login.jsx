@@ -1,44 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import image from "./download.jpg";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteInputData, googleLogin, login, signup, userFormData } from "../Redux/userSlice";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fullName: ''
-  });
+  const navigate = useNavigate();
+  const formData = useSelector(store => store.user.userInput);
+  const dispatch = useDispatch();
 
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log("✅ Google login success:", result.user);
-      alert("Welcome " + result.user.displayName);
+      const res = await dispatch(googleLogin({ email: result.user.email }))
+      navigate("/");
     } catch (error) {
-      console.error("❌ Google login error:", error);
-      alert("Google login failed. Try again.");
+
     }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
+    const { name, value } = e.target;
+    dispatch(userFormData({ key: name, value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isSignUp && formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
+  useEffect(() => {
+    dispatch(deleteInputData());
+  }, [isSignUp])
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
     }
-    console.log(isSignUp ? "Signing up..." : "Logging in...", formData);
-  };
+  })
 
+  const handleLogin = async () => {
+    const res = await dispatch(login(formData))
+    navigate("/");
+  }
+  const handleSignUp = async () => {
+    const res = await dispatch(signup(formData))
+    navigate("/");
+  }
   return (
     <div className="container-fluid login-container shadow-lg vh-100">
       <div className="container py-5">
@@ -57,9 +62,9 @@ const Login = () => {
               <div
                 className="position-absolute bottom-0 start-0 end-0 p-4 text-center"
                 style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)', // light blur bg
-                  backdropFilter: 'blur(10px)', // blur effect
-                  WebkitBackdropFilter: 'blur(10px)', // for Safari
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   color: '#fff',
                 }}
               >
@@ -70,11 +75,9 @@ const Login = () => {
                   {isSignUp ? "Join us today" : "Please login to access your account"}
                 </p>
               </div>
-
             </div>
           </div>
 
-          {/* Right Form */}
           <div className="col-lg-6 p-5">
             <div className="text-center mb-4">
               <h2 className="fw-bold text-gradient" style={{
@@ -92,8 +95,9 @@ const Login = () => {
                 type="email"
                 className="form-control"
                 id="email"
+                name="email"
                 placeholder="name@example.com"
-                value={formData.email}
+                value={formData.email || ""}
                 onChange={handleChange}
                 required
                 style={{ borderLeft: '4px solid #667eea' }}
@@ -109,8 +113,9 @@ const Login = () => {
                 type="password"
                 className="form-control"
                 id="password"
+                name="password"
                 placeholder="Password"
-                value={formData.password}
+                value={formData.password || ""}
                 onChange={handleChange}
                 required
                 minLength={6}
@@ -128,8 +133,9 @@ const Login = () => {
                   type="password"
                   className="form-control"
                   id="confirmPassword"
+                  name="confirmPassword"
                   placeholder="Confirm Password"
-                  value={formData.confirmPassword}
+                  value={formData.confirmPassword || ""}
                   onChange={handleChange}
                   required
                   minLength={6}
@@ -157,6 +163,7 @@ const Login = () => {
                 borderRadius: '50px',
                 fontSize: '1.1rem'
               }}
+              onClick={isSignUp ? handleSignUp : handleLogin}
             >
               {isSignUp ? "Sign Up" : "Login"}
             </button>

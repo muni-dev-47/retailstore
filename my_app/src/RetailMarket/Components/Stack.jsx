@@ -21,6 +21,7 @@ const Stack = () => {
   const handleStackUpdateIndex = (index) => {
     setStackUpdate(val => ({ ...val, [index]: !val[index] }));
   }
+
   const handledeleteStackItem = (index) => {
     dispatch(deleteStackItem({ section, index }));
   }
@@ -41,15 +42,15 @@ const Stack = () => {
         sectionName: section
       }
       if (path.length == 1) {
-        dispatch(postStackStatement(statement));
+        dispatch(postStackStatement({ statement, email: JSON.parse((localStorage.getItem("user"))).email }));
         dispatch(addAllStackInSection({ section, date: location.state.date, sectionName: section }))
       } else {
         const index = path[1];
-        dispatch(putStackStatement(statement))
+        dispatch(putStackStatement({ statement, email: JSON.parse((localStorage.getItem("user"))).email }))
         dispatch(updateStackList({ index, section }));
       }
     }
-    dispatch(removeTab({ path: window.location.pathname, navigate ,navigationPath:"/stacks"}))
+    dispatch(removeTab({ path: window.location.pathname, navigate, navigationPath: "/stacks" }))
   }
   const handleAddStack = () => {
     if (itemName.current.value !== "" && itemCount.current.value !== "" && itemPrice.current.value !== "") {

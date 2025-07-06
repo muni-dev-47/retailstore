@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Sales from '../Presentation/Sales';
 import { setCustomer, setDate, setPaymentType, updateSales } from '../Redux/appSlice';
 import axios from 'axios';
+import { useCheckingPath } from '../Layout/checkingPath';
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const Home = () => {
   const customer = billItem?.billDetails?.cusName[id]?.customer || "ALL";
   const date = billItem?.billDetails?.date[id]?.date || new Date().toISOString().split("T")[0];
   const time = new Date().getTime();
-
+  console.log(useCheckingPath())
   const addToBillhandleing = () => {
     navigate(`/bill/${time}`);
   }

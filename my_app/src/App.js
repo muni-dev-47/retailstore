@@ -9,7 +9,7 @@ import Login from './RetailMarket/Components/Login';
 function App() {
   return (
     <Provider store={store}>
-      <Login />
+      <Routes />
     </Provider>
   );
 }

@@ -82,10 +82,22 @@ const stackSlice = createSlice({
             state.stacks.push({ section: { stacks: state.section.section[section], date, sectionName } })
             delete state.section.section[section]
             delete state?.stack?.[section]
+        },
+        deleteSectionAllItems: (state, action) => {
+            const { section } = action.payload;
+            delete state.section.section[section];
+            delete state.stack[section];
+        },
+        deleteAllStacks: (state) => {
+            return {
+                stacks: [],
+                section: { section: {} },
+                stack: {}
+            }
         }
     }
 })
 
-export const { addStack, updateStackList, updateStackItems, setStackForBackend, deleteStackItem, updateStack, addStackInStore, addAllStackInSection } = stackSlice.actions;
+export const { addStack, updateStackList, deleteAllStacks,deleteSectionAllItems, updateStackItems, setStackForBackend, deleteStackItem, updateStack, addStackInStore, addAllStackInSection } = stackSlice.actions;
 
 export default stackSlice.reducer;

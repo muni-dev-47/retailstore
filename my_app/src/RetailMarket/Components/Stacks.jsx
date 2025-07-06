@@ -95,7 +95,7 @@ const Stacks = () => {
                   <td>{index + 1}</td>
                   <td>{val?.section?.sectionName?.toUpperCase()}</td>
                   <td>{val?.section?.date.split("T")[0]}</td>
-                  <td>{val.section.stacks.length}</td>
+                  <td>{val?.section?.stacks?.length}</td>
                   <td>
                     <button className='btn btn-primary rounded-pill' onClick={() => updateStackItem(val, index)}><i class="bi bi-pencil edit" title="Edit"></i></button>
                   </td>

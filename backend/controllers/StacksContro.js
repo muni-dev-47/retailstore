@@ -1,10 +1,11 @@
 const Stacks = require("../models/stackesDBM");
 
-const MAIN_DOC_ID = "single-stacks-data";
 
 const getStacks = async (req, res) => {
     try {
-        const doc = await Stacks.findOne({ _id: MAIN_DOC_ID });
+        const email = req.query.email;
+
+        const doc = await Stacks.findOne({ _id: email });
 
         if (!doc) {
             return res.status(404).json({ message: "Stacks document not found" });
@@ -19,11 +20,11 @@ const getStacks = async (req, res) => {
 
 const postStacks = async (req, res) => {
     try {
-        const section = req.body;
+        const { statement, email } = req.body;
 
         const updated = await Stacks.findOneAndUpdate(
-            { _id: MAIN_DOC_ID },
-            { $push: { stacks: { section } } },
+            { _id: email },
+            { $push: { stacks: { section: statement } } },
             { upsert: true, new: true }
         );
 
@@ -34,12 +35,13 @@ const postStacks = async (req, res) => {
 };
 
 const putStacks = async (req, res) => {
-    const { date, sectionName, stacks } = req.body;
+    const { statement, email } = req.body;
+    const { date, sectionName, stacks } = statement;
 
     try {
         const updatedDoc = await Stacks.findOneAndUpdate(
             {
-                _id: MAIN_DOC_ID,
+                _id: email,
                 stacks: {
                     $elemMatch: {
                         "section.date": date,

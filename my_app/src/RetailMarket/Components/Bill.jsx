@@ -30,11 +30,14 @@ const Bill = () => {
 
   const updateSale = () => {
     const statement = {
-      id: inde,
-      bill: billDetails.billItems[inde],
-      cusName: billDetails.cusName[inde]?.customer || "retailer",
-      date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
-      paymentType: billDetails.paymentType[inde]?.paymentType || "Credit"
+      statement: {
+        id: inde,
+        bill: billDetails.billItems[inde],
+        cusName: billDetails.cusName[inde]?.customer || "retailer",
+        date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
+        paymentType: billDetails.paymentType[inde]?.paymentType || "Credit",
+        email: JSON.parse((localStorage.getItem("user"))).email
+      }
     };
     dispatch(putSalesStatement(statement));
     dispatch(setUpdateBill({ id: inde }));
@@ -68,11 +71,11 @@ const Bill = () => {
       bill: billDetails.billItems[inde],
       cusName: billDetails.cusName[inde]?.customer || "retailer",
       date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
-      paymentType: billDetails.paymentType[inde]?.paymentType || "Credit"
+      paymentType: billDetails.paymentType[inde]?.paymentType || "Credit",
     };
-
+    console.log(localStorage.getItem("user"));
     dispatch(setSalesStatement({ id: inde }));
-    dispatch(postSalesStatement(statement));
+    dispatch(postSalesStatement({ statement, email: JSON.parse((localStorage.getItem("user"))).email }));
     dispatch(removeTab({ path: window.location.pathname, navigate, navigationPath: "/" }));
   }
   return (
@@ -200,4 +203,4 @@ const Bill = () => {
   )
 }
 
-export default Bill
+export default Bill;
