@@ -18,7 +18,6 @@ const Stacks = () => {
     dispatch(updateStackItems({ index }));
     navigate(`/stack/${item.section.sectionName + "&" + index}`);
   }
-  console.log(searchData)
   const handleFilterStacks = () => {
     return stack.filter(val =>
       select === "section"
@@ -28,7 +27,6 @@ const Stacks = () => {
         : val.section.date?.split("T")[0] === searchData.date
     );
   };
-  console.log(handleFilterStacks())
   return (
     <div>
       {search &&
@@ -163,7 +161,7 @@ const Stacks = () => {
                 }}
                 onClick={() =>
                   sectionInput.section
-                    ? navigate(`/stack/${sectionInput.section}`, { state: { ...sectionInput } })
+                    ? navigate(`/stack/${sectionInput.section}`, { state: { ...sectionInput, date: new Date().toISOString() } })
                     : alert("Please enter the section")
                 }
                 onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}

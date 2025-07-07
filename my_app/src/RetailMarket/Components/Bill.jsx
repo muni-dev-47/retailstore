@@ -20,6 +20,7 @@ const Bill = () => {
   const date = billItem?.billDetails?.date[inde] || "";
   const items = billItem?.billDetails?.billItems[inde] || [];
   const bill = billItem?.billItem?.[inde] || {};
+
   const handleUpdate = (index) => {
     setUpdate(prev => ({ ...prev, [index]: !prev[index] }));
   }
@@ -73,7 +74,6 @@ const Bill = () => {
       date: billDetails.date[inde]?.date || new Date().toISOString().split("T")[0],
       paymentType: billDetails.paymentType[inde]?.paymentType || "Credit",
     };
-    console.log(localStorage.getItem("user"));
     dispatch(setSalesStatement({ id: inde }));
     dispatch(postSalesStatement({ statement, email: JSON.parse((localStorage.getItem("user"))).email }));
     dispatch(removeTab({ path: window.location.pathname, navigate, navigationPath: "/" }));
@@ -103,7 +103,7 @@ const Bill = () => {
         </div>
         <div className="col-md-4">
           <select className="form-select form-select-lg rounded-2 shadow-sm" name='paymentType' value={paymentType} onChange={billhandleing}>
-            <option value="Depite">Depite</option>
+            <option value="Debit">Debit</option>
             <option value="Credit">Credit</option>
           </select>
         </div>

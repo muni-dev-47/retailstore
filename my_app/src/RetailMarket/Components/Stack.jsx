@@ -21,7 +21,7 @@ const Stack = () => {
   const handleStackUpdateIndex = (index) => {
     setStackUpdate(val => ({ ...val, [index]: !val[index] }));
   }
-
+  console.log(location.state)
   const handledeleteStackItem = (index) => {
     dispatch(deleteStackItem({ section, index }));
   }

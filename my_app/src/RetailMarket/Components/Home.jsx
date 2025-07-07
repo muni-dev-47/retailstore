@@ -14,7 +14,6 @@ const Home = () => {
   const customer = billItem?.billDetails?.cusName[id]?.customer || "ALL";
   const date = billItem?.billDetails?.date[id]?.date || new Date().toISOString().split("T")[0];
   const time = new Date().getTime();
-  console.log(useCheckingPath())
   const addToBillhandleing = () => {
     navigate(`/bill/${time}`);
   }
@@ -50,7 +49,7 @@ const Home = () => {
         </div>
         <div className="col-md-4">
           <select className="form-select form-select-lg rounded-2 shadow-sm" name='paymentType' value={paymentType} onChange={billhandleing}>
-            <option value="Depite">Depite</option>
+            <option value="Debit">Debit</option>
             <option value="Credit">Credit</option>
           </select>
         </div>

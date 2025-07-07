@@ -16,7 +16,6 @@ export const putStackStatement = createAsyncThunk(
     "bill/putSalesStatement",
     async (statement, { rejectWithValue }) => {
         try {
-            console.log(statement)
             const response = await axios.put("http://localhost:5000/api/putStacks", statement);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Something went wrong");
@@ -60,7 +59,6 @@ const stackSlice = createSlice({
         },
         updateStackItems: (state, action) => {
             const { index } = action.payload;
-            console.log(state.stacks[index])
             const sectionName = state.stacks[index].section.sectionName;
             const stacks = state.stacks[index].section.stacks;
             state.section.section[sectionName] = stacks;

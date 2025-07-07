@@ -8,7 +8,7 @@ import { deleteAllStacks } from '../Redux/stackSlice';
 const Setting = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const handleLogout = () => {
     const confirm = window.confirm("Are you sure you want to logout?");
     if (confirm) {
@@ -23,7 +23,7 @@ const Setting = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <button 
+      <button
         className="btn btn-danger px-4 py-3 fw-bold rounded-pill shadow-sm transition-all"
         onClick={handleLogout}
         style={{

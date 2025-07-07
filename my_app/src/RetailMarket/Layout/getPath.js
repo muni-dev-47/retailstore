@@ -1,6 +1,5 @@
 export const getPath = (id, sname, cname) => {
-    const path = window.location.pathname;
-
+    const path = window.location.pathname.replace(/%20/g, " ");
     if (path === "/") {
         return "Home";
     } else if (path === "/stacks") {

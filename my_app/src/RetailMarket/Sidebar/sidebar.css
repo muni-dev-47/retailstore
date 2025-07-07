@@ -27,3 +27,11 @@ li{
     background-color: #343a40;
   }
   
+  .sidebar-title {
+  padding: 0 10px;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.3;
+}

@@ -3,7 +3,7 @@ const Sales = require("../models/salesDBM");
 const getSales = async (req, res) => {
   try {
     const email = req.query.email;
-    
+
     const doc = await Sales.findOne({ _id: email });
 
     if (!doc) {
@@ -19,7 +19,6 @@ const getSales = async (req, res) => {
 const postSales = async (req, res) => {
   try {
     const { statement, email } = req.body;
-    console.log(statement);
     const updatedDoc = await Sales.findOneAndUpdate(
       { _id: email },
       { $push: { sales: statement } },
@@ -36,8 +35,8 @@ const postSales = async (req, res) => {
 };
 
 const updateSales = async (req, res) => {
-  const { id, cusName, paymentType, bill, date, email } = req.body;
-
+  const { statement } = req.body;
+  const { id, cusName, paymentType, bill, date, email } = statement;
   try {
     const result = await Sales.findOneAndUpdate(
       { _id: email, "sales.id": id },

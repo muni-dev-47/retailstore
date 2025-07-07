@@ -80,7 +80,6 @@ const billSlice = createSlice({
         },
         setUpdateBillItems: (state, action) => {
             const { id, index, key, value } = action.payload;
-            console.log(Number(value))
             if (Number(value) !== 0) {
                 state.billDetails.billItems[id][index] = { ...state.billDetails.billItems[id][index], [key]: value };
             } else {

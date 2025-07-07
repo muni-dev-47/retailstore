@@ -5,7 +5,6 @@ import Routes from './RetailMarket/Routes/Routes';
 import "./App.css";
 import { Provider } from "react-redux";
 import { store } from './RetailMarket/Redux/store';
-import Login from './RetailMarket/Components/Login';
 function App() {
   return (
     <Provider store={store}>

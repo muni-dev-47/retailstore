@@ -4,8 +4,8 @@
 }
 
 *::-webkit-scrollbar {
-  height: 4px;     
-  width: 4px;       
+  height: 4px;
+  width: 4px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -64,9 +64,40 @@
 }
 
 .login-container {
-  background-image: url("./RetailMarket/Components/Premium\ Vector\ _\ Grocery\ Aisle.jpg"); 
+  background-image: url("./RetailMarket/Components/Premium\ Vector\ _\ Grocery\ Aisle.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-content,
+  .print-content * {
+    visibility: visible;
+  }
+
+  .print-content {
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    background: white;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+
+.back {
+    background-image: url("./RetailMarket/Components/download.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: white;
 }

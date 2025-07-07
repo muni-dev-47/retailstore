@@ -12,8 +12,9 @@ const getStacks = async (req, res) => {
         }
 
         res.status(200).json(doc.stacks);
+        
     } catch (err) {
-        console.error("Error fetching stacks:", err.message);
+
         res.status(500).json({ message: "Error fetching stacks", error: err.message });
     }
 };

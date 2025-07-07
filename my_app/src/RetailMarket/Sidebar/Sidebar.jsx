@@ -8,8 +8,9 @@ const Sidebar = () => {
   }
   return (
     <div className="sidebar-main bg-dark text-white p-3" style={{ height: '100vh', width: '200px', marginTop: '54px' }}>
-      <h5 className="mb-4">Shop name</h5>
-      <ul className="nav flex-column">
+      <h5 className="sidebar-title text-center mb-4 pb-2 pt-2 border-bottom border-top">
+        {JSON.parse(localStorage.getItem("user")).shopName.toUpperCase()}
+      </h5>    <ul className="nav flex-column">
         <li className="nav-item mb-2" onClick={() => routehandleing("/")}>
           <i className="bi bi-house-door me-2" ></i> Home
         </li>
