@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import Sales from '../Presentation/Sales';
 import { setCustomer, setDate, setPaymentType, updateSales } from '../Redux/appSlice';
-import axios from 'axios';
-import { useCheckingPath } from '../Layout/checkingPath';
+
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

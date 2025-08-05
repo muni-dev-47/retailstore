@@ -1,11 +1,9 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { removeTab } from "../Redux/tabSlice";
+import { useParams } from "react-router-dom";
 
 const BillDetails = forwardRef((props, ref) => {
   const { cname } = useParams();
-  const navigate = useNavigate()
   const cusName = cname.split("&")[0];
   const index = cname.split("&")[1];
   const noRef = useRef();

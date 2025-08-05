@@ -5,7 +5,7 @@ export const postStackStatement = createAsyncThunk(
     "bill/postSalesStatement",
     async (statement, { rejectWithValue }) => {
         try {
-            const response = await axios.post("http://localhost:5000/api/postStacks", statement);
+            await axios.post("http://localhost:5000/api/postStacks", statement);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Something went wrong");
         }
@@ -16,7 +16,7 @@ export const putStackStatement = createAsyncThunk(
     "bill/putSalesStatement",
     async (statement, { rejectWithValue }) => {
         try {
-            const response = await axios.put("http://localhost:5000/api/putStacks", statement);
+             await axios.put("http://localhost:5000/api/putStacks", statement);
         } catch (err) {
             return rejectWithValue(err.response?.data || "Something went wrong");
         }
@@ -68,7 +68,7 @@ const stackSlice = createSlice({
             if (!state.section.section[section]) state.section.section[section] = [];
             let index = 0;
             index = state.section.section[section]?.findIndex(val => (val.itemName === state.stack[section].itemName) && (val.itemPrice === state.stack[section].itemPrice))
-            if (index != -1) {
+            if (index !== -1) {
                 state.section.section[section][index].itemCount = new Number(state.section.section[section][index].itemCount) + new Number(state.stack[section].itemCount);
             } else {
                 state.section.section[section].push({ ...state.stack[section] })

@@ -265,7 +265,7 @@ const Login = () => {
     if (localStorage.getItem("user")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleLogin = async () => {
     if (!formData.email || !formData.password) {

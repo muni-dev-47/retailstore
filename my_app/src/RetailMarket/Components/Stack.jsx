@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { addAllStackInSection, addStack, updateStack, addStackInStore, deleteStackItem, updateStackList, postStackStatement, putStackStatement } from '../Redux/stackSlice';
@@ -38,10 +38,10 @@ const Stack = () => {
       const path = sname.split("&");
       const statement = {
         stacks: sectionItems[section],
-        date: path.length == 1 ? location.state.date : stack.stacks[path[1]].section.date,
+        date: path.length === 1 ? location.state.date : stack.stacks[path[1]].section.date,
         sectionName: section
       }
-      if (path.length == 1) {
+      if (path.length === 1) {
         dispatch(postStackStatement({ statement, email: JSON.parse((localStorage.getItem("user"))).email }));
         dispatch(addAllStackInSection({ section, date: location.state.date, sectionName: section }))
       } else {
