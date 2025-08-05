@@ -61,64 +61,186 @@ const Stack = () => {
     }
   }
   return (
-    <div>
-      <div className='p-3'>
-        <h4>SECTION: {section.toUpperCase()} </h4>
+    <div className="container-fluid p-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h4 className="text-primary fw-bold mb-0">
+          <i className="bi bi-collection me-2"></i>
+          : {section.toUpperCase()}
+        </h4>
+      </div>
 
+      <div className="card shadow-sm border-0 rounded-3 mb-4">
+        <div className="card-body p-4">
+          <div className="row g-3 align-items-end">
+            <div className="col-md-4 form-floating">
+              <input
+                ref={itemName}
+                type="text"
+                value={stackItems?.itemName || ""}
+                name="itemName"
+                className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                placeholder=" "
+                onChange={handlestackItems}
+                onKeyDown={(e) => e.key === "Enter" && itemPrice.current.focus()}
+              />
+              <label className="text-muted">Product ID or Name</label>
+            </div>
+
+            <div className="col-md-3 form-floating">
+              <input
+                type="number"
+                ref={itemPrice}
+                name="itemPrice"
+                value={stackItems?.itemPrice || ""}
+                className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                placeholder=" "
+                onChange={handlestackItems}
+                onKeyDown={(e) => e.key === "Enter" && itemCount.current.focus()}
+              />
+              <label className="text-muted">Price (₹)</label>
+            </div>
+
+            <div className="col-md-3 form-floating">
+              <input
+                type="number"
+                ref={itemCount}
+                name="itemCount"
+                value={stackItems?.itemCount || ""}
+                className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                placeholder=" "
+                onChange={handlestackItems}
+                onKeyDown={(e) => e.key === "Enter" && handleAddStack()}
+                min="1"
+              />
+              <label className="text-muted">Quantity</label>
+            </div>
+
+            <div className="col-md-2">
+              <button
+                className="btn btn-primary btn-lg w-100 rounded-pill"
+                onClick={handleAddStack}
+                disabled={!stackItems?.itemName || !stackItems?.itemPrice || !stackItems?.itemCount}
+              >
+                <i className="bi bi-plus-lg me-2"></i> Add
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className='row  g-4 align-items-center mb-2'>
-        <div className='col'><input ref={itemName} type="text" value={stackItems?.itemName || ""} name="itemName" className='form-control form-control-lg rounded-2 shadow-sm' placeholder='Enter Product ID or Name' onChange={handlestackItems} onKeyDown={(e) => e.key === "Enter" ? itemPrice.current.focus() : ""} /></div>
-        <div className='col'><input type="number" ref={itemPrice} name="itemPrice" value={stackItems?.itemPrice || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder='Enter Product Price' onChange={handlestackItems} onKeyDown={(e) => e.key === "Enter" ? itemCount.current.focus() : ""} /></div>
-        <div className='col'><input type="number" ref={itemCount} name="itemCount" value={stackItems?.itemCount || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder='Enter Product Quantity' onChange={handlestackItems} onKeyDown={(e) => e.key === "Enter" ? handleAddStack() : ""} /></div>
-        <div className='col-3 col-sm-2'><button className='btn btn-primary rounded-2 px-5 p-2' onClick={handleAddStack}>Add Stack</button></div>
-      </div>
-      <div className='mt-3'>
-        <table className='table table-bordered table-hover text-center'>
-          <thead>
-            <tr>
-              <th>NO</th>
-              <th>ITEM NAME</th>
-              <th>PRICE</th>
-              <th>COUNT</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              allStackItems?.map((val, index) => (
-                <tr key={index} class="fs-6">
-                  <td>{index + 1}</td>
-                  {!stackUpdate[index] ?
-                    (<><td>{val?.itemName}</td>
-                      <td>{val?.itemPrice}</td>
-                      <td>{val?.itemCount}</td></>) : (
+      <div className="card shadow-sm border-0 rounded-3 mb-4">
+        <div className="table-responsive">
+          <table className="table table-hover align-middle mb-0">
+            <thead className="bg-light">
+              <tr>
+                <th className="ps-4">#</th>
+                <th>ITEM NAME</th>
+                <th className="text-end">PRICE (₹)</th>
+                <th className="text-center">QTY</th>
+                <th className="text-end pe-4">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allStackItems?.length > 0 ? (
+                allStackItems.map((val, index) => (
+                  <tr key={index} className={stackUpdate[index] ? "bg-light-warning" : ""}>
+                    <td className="ps-4 fw-medium">{index + 1}</td>
+
+                    {!stackUpdate[index] ? (
                       <>
-                        <td><input type="text" name='itemName' className="form-control rounded-2" value={val?.itemName} placeholder='Enter Product ID or Name' onChange={(e) => updateStackItem(e, index)} /></td>
-                        <td><input type="number" name='itemPrice' className='form-control rounded-2' value={val?.itemPrice} placeholder='Enter Product Price' onChange={(e) => updateStackItem(e, index)} /></td>
-                        <td><input type="number" name='itemCount' className='form-control rounded-2' value={val?.itemCount} placeholder='Enter Product Quantity' onChange={(e) => updateStackItem(e, index)} /></td>
+                        <td className="text-uppercase">{val?.itemName}</td>
+                        <td className="text-end">₹{Number(val?.itemPrice).toFixed(2)}</td>
+                        <td className="text-center">{val?.itemCount}</td>
+                      </>
+                    ) : (
+                      <>
+                        <td>
+                          <input
+                            type="text"
+                            name="itemName"
+                            className="form-control form-control-sm border-primary"
+                            value={val?.itemName}
+                            onChange={(e) => updateStackItem(e, index)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="itemPrice"
+                            className="form-control form-control-sm border-primary text-end"
+                            value={val?.itemPrice}
+                            onChange={(e) => updateStackItem(e, index)}
+                            step="0.01"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="itemCount"
+                            className="form-control form-control-sm border-primary text-center"
+                            value={val?.itemCount}
+                            onChange={(e) => updateStackItem(e, index)}
+                            min="1"
+                          />
+                        </td>
                       </>
                     )}
-                  <td><button className='btn btn-primary rounded-pill' onClick={() => handleStackUpdateIndex(index)}>{!stackUpdate[index] ? <i class="bi bi-pencil-square"></i> : <i class="bi bi-check-circle text-white" ></i>}
-                  </button>
-                    <button className='btn btn-danger rounded-pill' onClick={() => handledeleteStackItem(index)}><i class="bi bi-trash" title="Edit"></i></button>
+
+                    <td className="text-end pe-4">
+                      <div className="d-flex gap-2 justify-content-end">
+                        <button
+                          className={`btn btn-sm ${stackUpdate[index] ? 'btn-success' : 'btn-outline-primary'} rounded-pill`}
+                          onClick={() => handleStackUpdateIndex(index)}
+                        >
+                          {!stackUpdate[index] ? (
+                            <i className="bi bi-pencil-fill"></i>
+                          ) : (
+                            <i className="bi bi-check-lg"></i>
+                          )}
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger rounded-pill"
+                          onClick={() => handledeleteStackItem(index)}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4 text-muted">
+                    <i className="bi bi-inbox me-2"></i> No items added yet
                   </td>
-
-
                 </tr>
-              ))
-            }
-          </tbody>
-          <tfoot>
-            <tr class="table table-bordered">
-              <td colSpan={3}>Total Items : {allStackItems?.reduce((sum) => (sum + 1 || 0), 0) || 0}</td>
-              <td colSpan={3}>Total Counts : {allStackItems?.reduce((sum, val) => sum + Number(val?.itemCount), 0) || 0}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="d-flex justify-content-center">
-        <button className='btn btn-dark addbillbutton1 rounded-pill rounded-2 px-4 p-3' onClick={handleAddAllStacks}><i class="bi bi-check-circle-fill text-white"></i>  ADD STACK</button>
+
+      <div className="card shadow-sm border-0 rounded-3">
+        <div className="card-body p-3">
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex gap-4">
+              <div className="text-center">
+                <div className="text-muted small">TOTAL ITEMS</div>
+                <div className="h5 mb-0 text-primary">{allStackItems?.reduce((sum) => sum + 1, 0) || 0}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-muted small">TOTAL QUANTITY</div>
+                <div className="h5 mb-0 text-success">{allStackItems?.reduce((sum, val) => sum + Number(val?.itemCount), 0) || 0}</div>
+              </div>
+            </div>
+            <button
+              className="btn btn-dark btn-lg rounded-pill px-4 d-flex align-items-center"
+              onClick={handleAddAllStacks}
+              disabled={!allStackItems?.length}
+            >
+              <i className="bi bi-check-circle-fill me-2"></i> ADD STACK
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

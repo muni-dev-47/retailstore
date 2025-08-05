@@ -29,17 +29,52 @@ const Stacks = () => {
   };
   return (
     <div>
-      {search &&
-        <div className='row' style={{ filter: section ? 'blur(5px)' : "", marginBottom: "50px" }}>
-          <div className='col'><input type="text" name="" className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Section..." /></div>
-          {select === "section" ? <div className='col'><input type="text" name='sectionName' value={searchData?.sectionName || ""} className='form-control form-control-lg rounded-2 shadow-sm' placeholder="Search by name or ID" onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))} /></div> :
-            <div className='col'><input type="date" name="date" className='form-control form-control-lg rounded-2 shadow-sm' value={searchData?.date ?? new Date().toISOString().split("T")[0]} onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))} /></div>}
-          <div className='col'><select className="form-select form-select-lg rounded-2 shadow-sm" onChange={(e) => setselect(e.target.value)} >
-            <option value={"section"}>Section</option>
-            <option value={"date"}>Date</option>
-          </select></div>
+      {search && (
+        <div className={`card mb-4`} style={{ filter: section ? 'blur(5px)' : "" }}>
+          <div className="card-body p-2">
+            <div className="row g-3 align-items-center">
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                  placeholder="Section..."
+                />
+              </div>
+
+              <div className="col-md-4">
+                {select === "section" ? (
+                  <input
+                    type="text"
+                    name="sectionName"
+                    value={searchData?.sectionName || ""}
+                    className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                    placeholder="Search by name or ID"
+                    onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))}
+                  />
+                ) : (
+                  <input
+                    type="date"
+                    name="date"
+                    className="form-control form-control-lg border-0 border-bottom rounded-0 shadow-none"
+                    value={searchData?.date ?? new Date().toISOString().split("T")[0]}
+                    onChange={(e) => setSearchData(val => ({ ...val, [e.target.name]: e.target.value }))}
+                  />
+                )}
+              </div>
+
+              <div className="col-md-4">
+                <select
+                  className="form-select form-select-lg border-0 border-bottom rounded-0 shadow-none"
+                  onChange={(e) => setselect(e.target.value)}
+                >
+                  <option value="section">Section</option>
+                  <option value="date">Date</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-      }
+      )}
       <div className='d-flex justify-content-center' style={{ filter: section ? 'blur(5px)' : "" }}>
         <div className="d-flex addbillbutton">
           <div className="p-2">
@@ -73,35 +108,53 @@ const Stacks = () => {
               )}
             </button>
           </div>
+
         </div>
       </div>
-      <div style={{ filter: section ? 'blur(5px)' : "" }}>
-        <table className='table table-bordered table-hover text-center'>
-          <thead>
-            <tr>
-              <th>NO</th>
-              <th>SECTION NAME</th>
-              <th>DATE</th>
-              <th>ITEM COUNT</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              handleFilterStacks()?.map((val, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{val?.section?.sectionName?.toUpperCase()}</td>
-                  <td>{val?.section?.date.split("T")[0]}</td>
-                  <td>{val?.section?.stacks?.length}</td>
-                  <td>
-                    <button className='btn btn-primary rounded-pill' onClick={() => updateStackItem(val, index)}><i class="bi bi-pencil edit" title="Edit"></i></button>
+      <div className={`card shadow-sm border-0`} style={{ filter: section ? 'blur(5px)' : "" }}>
+        <div className="table-responsive">
+          <table className="table table-hover align-middle">
+            <thead className="bg-light">
+              <tr>
+                <th className="ps-4">#</th>
+                <th>SECTION NAME</th>
+                <th>DATE</th>
+                <th className="text-center">ITEMS</th>
+                <th className="text-end pe-4">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {handleFilterStacks()?.length > 0 ? (
+                handleFilterStacks()?.map((val, index) => (
+                  <tr key={index}>
+                    <td className="ps-4">{index + 1}</td>
+                    <td className="fw-semibold text-uppercase">{val?.section?.sectionName}</td>
+                    <td>{val?.section?.date.split("T")[0]}</td>
+                    <td className="text-center">
+                      <span className="badge bg-primary-subtle text-primary">
+                        {val?.section?.stacks?.length}
+                      </span>
+                    </td>
+                    <td className="text-end pe-4">
+                      <button
+                        className="btn btn-sm btn-outline-primary rounded-pill"
+                        onClick={() => updateStackItem(val, index)}
+                      >
+                        <i className="bi bi-pencil-fill me-1"></i> Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4 text-muted">
+                    <i className="bi bi-inbox me-2"></i> No sections found
                   </td>
                 </tr>
-              ))
-            }
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       {section && (
         <div className="d-flex justify-content-center align-items-center">
