@@ -69,7 +69,7 @@ const stackSlice = createSlice({
             let index = 0;
             index = state.section.section[section]?.findIndex(val => (val.itemName === state.stack[section].itemName) && (val.itemPrice === state.stack[section].itemPrice))
             if (index !== -1) {
-                state.section.section[section][index].itemCount = new Number(state.section.section[section][index].itemCount) + new Number(state.stack[section].itemCount);
+                state.section.section[section][index].itemCount =  Number(state.section.section[section][index].itemCount) + Number(state.stack[section].itemCount);
             } else {
                 state.section.section[section].push({ ...state.stack[section] })
             }
