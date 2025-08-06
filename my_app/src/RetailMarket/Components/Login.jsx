@@ -259,7 +259,7 @@ const Login = () => {
   useEffect(() => {
     dispatch(deleteInputData());
     setNext(false);
-  }, [isSignUp]);
+  }, [isSignUp, dispatch]);
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
