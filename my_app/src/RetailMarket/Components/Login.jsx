@@ -198,7 +198,7 @@
 // export default Login;
 
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";

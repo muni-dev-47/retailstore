@@ -1,4 +1,3 @@
-import React from 'react'
 
 const Sales = (props) => {
     const { sales, updateSales, billDetails } = props;
